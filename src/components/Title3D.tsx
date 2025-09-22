@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface Title3DProps {
   text: string;
@@ -10,14 +10,28 @@ interface Title3DProps {
 export default function Title3D({ text, className = "" }: Title3DProps) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [rotation, setRotation] = useState({ x: 0, y: 0 });
+  const titleRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (isHovering) {
-        setMousePosition({
-          x: e.clientX,
-          y: e.clientY,
-        });
+      if (isHovering && titleRef.current) {
+        const element = titleRef.current;
+        const rect = element.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        // Calculate the rotation based on mouse position relative to center
+        const rotateY = ((e.clientX - centerX) / (rect.width / 2)) * 10;
+        const rotateX = ((centerY - e.clientY) / (rect.height / 2)) * 10;
+
+        setRotation({ x: rotateX, y: rotateY });
+
+        // Aplicar a transformação diretamente para evitar estilos inline
+        const titleElement = element.querySelector(".title-3d") as HTMLElement;
+        if (titleElement) {
+          titleElement.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        }
       }
     };
 
@@ -27,48 +41,26 @@ export default function Title3D({ text, className = "" }: Title3DProps) {
     };
   }, [isHovering]);
 
-  const calculateRotation = () => {
-    if (!isHovering) return { x: 0, y: 0 };
-
-    // Get the element's position
-    const element = document.querySelector(
-      ".title-3d-container"
-    ) as HTMLElement;
-    if (!element) return { x: 0, y: 0 };
-
-    const rect = element.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-
-    // Calculate the rotation based on mouse position relative to center
-    const rotateY = ((mousePosition.x - centerX) / (rect.width / 2)) * 10;
-    const rotateX = ((centerY - mousePosition.y) / (rect.height / 2)) * 10;
-
-    return { x: rotateX, y: rotateY };
-  };
-
-  const rotation = calculateRotation();
-
   return (
     <div
+      ref={titleRef}
       className={`title-3d-container relative ${className}`}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => {
         setIsHovering(false);
         setMousePosition({ x: 0, y: 0 });
+
+        // Resetar a transformação quando sair do hover
+        const titleElement = titleRef.current?.querySelector(
+          ".title-3d"
+        ) as HTMLElement;
+        if (titleElement) {
+          titleElement.style.transform =
+            "perspective(1000px) rotateX(0deg) rotateY(0deg)";
+        }
       }}
     >
-      <h1
-        className="title-3d relative"
-        style={{
-          transform: isHovering
-            ? `perspective(1000px) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`
-            : "perspective(1000px) rotateX(0) rotateY(0)",
-          transition: isHovering ? "none" : "transform 0.5s ease-out",
-        }}
-      >
-        {text}
-      </h1>
+      <h1 className="title-3d relative">{text}</h1>
     </div>
   );
 }

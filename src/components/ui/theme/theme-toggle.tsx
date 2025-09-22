@@ -9,7 +9,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-      className="p-2 rounded-md bg-sky-100 dark:bg-sky-900 text-sky-800 dark:text-sky-200"
+      className="p-2 rounded-md bg-violet-100 dark:bg-violet-900 text-violet-800 dark:text-violet-200"
       aria-label="Toggle theme"
     >
       <svg
