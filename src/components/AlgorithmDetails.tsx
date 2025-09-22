@@ -31,7 +31,9 @@ export default function AlgorithmDetails() {
             <h3 className="text-xl font-bold mb-4">Algoritmos de Cálculo</h3>
             <div className="space-y-4">
               <div className="bg-violet-50 dark:bg-violet-900/50 p-4 rounded-md overflow-x-auto">
-                <h3 className="font-bold text-lg mb-2">Cálculo de Rendimento</h3>
+                <h3 className="font-bold text-lg mb-2">
+                  Cálculo de Rendimento
+                </h3>
                 <pre className="text-sm">
                   {`function calcularRendimento(taxaAnual: number) {
   const meses = periodoTipo === "meses" ? periodo : periodo * 12;

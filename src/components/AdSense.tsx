@@ -11,14 +11,15 @@ interface AdSenseProps {
 export default function AdSense({
   client = "ca-pub-xxxxxxxxxxxxxxxx",
   slot = "xxxxxxxxxx",
-  format = "auto"
+  format = "auto",
 }: AdSenseProps) {
   const adRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Carrega o script do Google AdSense
     const script = document.createElement("script");
-    script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
+    script.src =
+      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
     script.async = true;
     script.crossOrigin = "anonymous";
     document.head.appendChild(script);

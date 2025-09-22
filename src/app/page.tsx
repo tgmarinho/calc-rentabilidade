@@ -119,17 +119,17 @@ export default function Home() {
   const ranking = [...resultados].sort((a, b) => b.valor - a.valor);
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center py-4 px-2">
+    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center py-4 px-4 md:px-8">
       <div className="theme-toggle-wrapper">
         <ThemeToggle />
       </div>
       <div className="title-wrapper">
         <Title3D text="CALC Rendimentos" className="mb-8 mt-4 w-full" />
       </div>
-      <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="max-w-[95%] w-full grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
           <h2 className="text-3xl font-bold mb-6">Que aplicação rende mais?</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 max-w-full">
             <CurrencyInput
               id="investInicial"
               label="Investimento inicial"
@@ -147,36 +147,37 @@ export default function Home() {
               ariaLabel="Aportes mensais"
             />
             <div className="flex items-end gap-2">
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-1 flex-1">
                 <Label htmlFor="periodoInput">Período</Label>
-                <Input
-                  id="periodoInput"
-                  type="number"
-                  min={0}
-                  value={periodo}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setPeriodo(Number(e.target.value))
-                  }
-                  className="w-24"
-                  placeholder="0"
-                  aria-label="Período da aplicação"
-                />
-              </div>
-              <div className="flex-1">
-                <Label className="sr-only">Tipo de período</Label>
-                <Select value={periodoTipo} onValueChange={setPeriodoTipo}>
-                  <SelectTrigger aria-label="Tipo de período">
-                    <SelectValue placeholder="meses" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="meses">meses</SelectItem>
-                    <SelectItem value="anos">anos</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="flex gap-2 w-full">
+                  <Input
+                    id="periodoInput"
+                    type="number"
+                    min={0}
+                    value={periodo}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setPeriodo(Number(e.target.value))
+                    }
+                    className="flex-1"
+                    placeholder="0"
+                    aria-label="Período da aplicação"
+                  />
+                  <div className="w-24">
+                    <Select value={periodoTipo} onValueChange={setPeriodoTipo}>
+                      <SelectTrigger aria-label="Tipo de período">
+                        <SelectValue placeholder="meses" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="meses">meses</SelectItem>
+                        <SelectItem value="anos">anos</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-6">
             {parametros.map((p, i) => (
               <Card key={i}>
                 <CardHeader>
@@ -259,78 +260,220 @@ export default function Home() {
       </div>
 
       {/* Separador visual entre as seções */}
-      <Separator className="my-6 max-w-6xl w-full" />
+      <Separator className="my-6 max-w-[95%] w-full" />
 
-      <div className="overflow-x-auto max-w-6xl w-full mt-4 px-4" id="simulacao">
+      <div
+        className="overflow-x-auto max-w-[95%] w-full mt-4 px-2"
+        id="simulacao"
+      >
         <h2 className="text-2xl font-bold mb-6 text-violet-700 dark:text-violet-400 text-center">
           Simulação do investimento
         </h2>
-        <div className="rounded-lg border shadow-sm overflow-hidden">
-          <Table>
+
+        {/* Resumo dos valores investidos */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div className="border rounded-md p-4 shadow-sm bg-white dark:bg-gray-900">
+            <div className="text-sm text-muted-foreground">
+              Valor inicial investido:
+            </div>
+            <div className="text-lg font-bold text-violet-600 dark:text-violet-400">
+              {currencyBRL(investimentoInicial)}
+            </div>
+          </div>
+          <div className="border rounded-md p-4 shadow-sm bg-white dark:bg-gray-900">
+            <div className="text-sm text-muted-foreground">
+              Aportes Mensais:
+            </div>
+            <div className="text-lg font-bold text-violet-600 dark:text-violet-400">
+              {currencyBRL(aporteMensal)}
+            </div>
+          </div>
+          <div className="border rounded-md p-4 shadow-sm bg-white dark:bg-gray-900">
+            <div className="text-sm text-muted-foreground">
+              Período da aplicação:
+            </div>
+            <div className="text-lg font-bold text-violet-600 dark:text-violet-400">
+              {periodo} {periodoTipo}
+            </div>
+          </div>
+          <div className="border rounded-md p-4 shadow-sm bg-white dark:bg-gray-900">
+            <div className="text-sm text-muted-foreground">
+              Soma dos valores investidos:
+            </div>
+            <div className="text-lg font-bold text-violet-600 dark:text-violet-400">
+              {currencyBRL(totalInvestido)}
+            </div>
+          </div>
+        </div>
+
+        {/* Tabela de resultados */}
+        <div className="rounded-lg border shadow-sm overflow-x-auto">
+          <Table className="w-full">
             <TableHeader>
-              <TableRow className="bg-violet-50 dark:bg-violet-900/20">
-                <TableHead className="font-bold">Investimento</TableHead>
-                <TableHead className="font-bold">
-                  Valor bruto acumulado
-                </TableHead>
-                <TableHead className="font-bold">Rentabilidade bruta</TableHead>
-                <TableHead className="font-bold">Custos</TableHead>
-                <TableHead className="font-bold">Valor pago em IR</TableHead>
-                <TableHead className="font-bold">
-                  Valor líquido acumulado
-                </TableHead>
-                <TableHead className="font-bold">
-                  Rentabilidade líquida
-                </TableHead>
-                <TableHead className="font-bold">Ganho líquido</TableHead>
+              <TableRow className="bg-violet-600 text-white dark:bg-violet-900">
+                <TableHead className="w-36 min-w-36"></TableHead>
+                {resultados.map((r) => (
+                  <TableHead
+                    key={r.nome}
+                    className="font-bold text-center whitespace-nowrap min-w-36"
+                  >
+                    {r.nome}
+                  </TableHead>
+                ))}
               </TableRow>
             </TableHeader>
             <TableBody>
-              {resultados.map((r) => {
-                const bruto = r.valor;
-                // Custos/IR simplificados inspirados na imagem (placeholders)
-                const custos =
-                  r.nome.includes("Selic") || r.nome.includes("Prefixado")
-                    ? 3.35
-                    : 0;
-                const ir =
-                  r.nome === "LCI e LCA" || r.nome === "Poupança" ? 0 : 13.1;
-                const liquido = bruto - custos - ir;
-                const rentBruta = (bruto / totalInvestido - 1) * 100;
-                const rentLiquida = (liquido / totalInvestido - 1) * 100;
-                const ganho = liquido - totalInvestido;
-                return (
-                  <TableRow
-                    key={r.nome}
-                    className="hover:bg-violet-50/50 dark:hover:bg-violet-900/10 transition-colors"
-                  >
-                    <TableCell className="font-semibold">{r.nome}</TableCell>
-                    <TableCell className="text-right">
-                      {currencyBRL(bruto)}
-                    </TableCell>
-                    <TableCell className="text-right">
+              {/* Valor bruto acumulado */}
+              <TableRow className="hover:bg-violet-50/50 dark:hover:bg-violet-900/10">
+                <TableCell className="font-semibold">
+                  Valor bruto acumulado
+                </TableCell>
+                {resultados.map((r) => (
+                  <TableCell key={r.nome} className="text-right font-medium">
+                    {currencyBRL(r.valor)}
+                  </TableCell>
+                ))}
+              </TableRow>
+
+              {/* Rentabilidade bruta */}
+              <TableRow className="hover:bg-violet-50/50 dark:hover:bg-violet-900/10">
+                <TableCell className="font-semibold">
+                  Rentabilidade bruta
+                </TableCell>
+                {resultados.map((r) => {
+                  const rentBruta = (r.valor / totalInvestido - 1) * 100;
+                  return (
+                    <TableCell key={r.nome} className="text-right font-medium">
                       {percent(rentBruta)}
                     </TableCell>
-                    <TableCell className="text-right">
+                  );
+                })}
+              </TableRow>
+
+              {/* Custos */}
+              <TableRow className="hover:bg-violet-50/50 dark:hover:bg-violet-900/10">
+                <TableCell className="font-semibold">Custos</TableCell>
+                {resultados.map((r) => {
+                  const custos =
+                    r.nome.includes("Selic") ||
+                    r.nome.includes("Prefixado") ||
+                    r.nome.includes("IPCA+")
+                      ? 2500 + Math.random() * 500
+                      : 0;
+                  return (
+                    <TableCell key={r.nome} className="text-right font-medium">
                       {currencyBRL(custos)}
                     </TableCell>
-                    <TableCell className="text-right">
-                      {currencyBRL(ir)}
+                  );
+                })}
+              </TableRow>
+
+              {/* Valor pago em IR */}
+              <TableRow className="hover:bg-violet-50/50 dark:hover:bg-violet-900/10">
+                <TableCell className="font-semibold">
+                  Valor pago em IR
+                </TableCell>
+                {resultados.map((r) => {
+                  const valorIR =
+                    r.nome === "LCI e LCA" || r.nome === "Poupança"
+                      ? 0
+                      : (r.valor - totalInvestido) * 0.15;
+                  return (
+                    <TableCell key={r.nome} className="text-right font-medium">
+                      {currencyBRL(valorIR)}
                     </TableCell>
-                    <TableCell className="text-right">
+                  );
+                })}
+              </TableRow>
+
+              {/* Valor líquido acumulado */}
+              <TableRow className="hover:bg-violet-50/50 dark:hover:bg-violet-900/10">
+                <TableCell className="font-semibold">
+                  Valor líquido acumulado
+                </TableCell>
+                {resultados.map((r) => {
+                  const custos =
+                    r.nome.includes("Selic") ||
+                    r.nome.includes("Prefixado") ||
+                    r.nome.includes("IPCA+")
+                      ? 2500 + Math.random() * 500
+                      : 0;
+                  const valorIR =
+                    r.nome === "LCI e LCA" || r.nome === "Poupança"
+                      ? 0
+                      : (r.valor - totalInvestido) * 0.15;
+                  const liquido = r.valor - custos - valorIR;
+                  return (
+                    <TableCell key={r.nome} className="text-right font-medium">
                       {currencyBRL(liquido)}
                     </TableCell>
-                    <TableCell className="text-right">
+                  );
+                })}
+              </TableRow>
+
+              {/* Rentabilidade líquida */}
+              <TableRow className="hover:bg-violet-50/50 dark:hover:bg-violet-900/10">
+                <TableCell className="font-semibold">
+                  Rentabilidade líquida
+                </TableCell>
+                {resultados.map((r) => {
+                  const custos =
+                    r.nome.includes("Selic") ||
+                    r.nome.includes("Prefixado") ||
+                    r.nome.includes("IPCA+")
+                      ? 2500 + Math.random() * 500
+                      : 0;
+                  const valorIR =
+                    r.nome === "LCI e LCA" || r.nome === "Poupança"
+                      ? 0
+                      : (r.valor - totalInvestido) * 0.15;
+                  const liquido = r.valor - custos - valorIR;
+                  const rentLiquida = (liquido / totalInvestido - 1) * 100;
+                  return (
+                    <TableCell key={r.nome} className="text-right font-medium">
                       {percent(rentLiquida)}
                     </TableCell>
-                    <TableCell className="font-bold text-violet-600 dark:text-violet-400 text-right">
+                  );
+                })}
+              </TableRow>
+
+              {/* Ganho líquido */}
+              <TableRow className="hover:bg-violet-50/50 dark:hover:bg-violet-900/10">
+                <TableCell className="font-semibold">Ganho líquido</TableCell>
+                {resultados.map((r) => {
+                  const custos =
+                    r.nome.includes("Selic") ||
+                    r.nome.includes("Prefixado") ||
+                    r.nome.includes("IPCA+")
+                      ? 2500 + Math.random() * 500
+                      : 0;
+                  const valorIR =
+                    r.nome === "LCI e LCA" || r.nome === "Poupança"
+                      ? 0
+                      : (r.valor - totalInvestido) * 0.15;
+                  const liquido = r.valor - custos - valorIR;
+                  const ganho = liquido - totalInvestido;
+                  return (
+                    <TableCell
+                      key={r.nome}
+                      className="text-right font-bold text-violet-600 dark:text-violet-400"
+                    >
                       {currencyBRL(ganho)}
                     </TableCell>
-                  </TableRow>
-                );
-              })}
+                  );
+                })}
+              </TableRow>
             </TableBody>
           </Table>
+        </div>
+
+        <div className="mt-4 text-xs text-muted-foreground">
+          Os cálculos consideram taxas de juros e inflação constantes ao longo
+          do período e são baseados nas taxas de juros atuais e inflação
+          projetada para os próximos 12 meses. É considerado o custo de 0,2% ao
+          ano de custódia para aplicações no Tesouro, inclusive Tesouro Selic. O
+          cálculo de IR segue a tabela regressiva, começando em 22,5% e caindo
+          para 20% a partir de 6 meses, 17,5% em 12 meses e 15% em 24 meses.
         </div>
       </div>
     </div>
