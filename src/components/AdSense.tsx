@@ -27,7 +27,11 @@ export default function AdSense({
     // Inicializa o anúncio quando o script for carregado
     script.onload = () => {
       try {
-        const adsbygoogle = (window as any).adsbygoogle || [];
+        // Definir um tipo específico para adsbygoogle
+        interface Window {
+          adsbygoogle: unknown[];
+        }
+        const adsbygoogle = (window as unknown as Window).adsbygoogle || [];
         adsbygoogle.push({});
       } catch (error) {
         console.error("AdSense error:", error);

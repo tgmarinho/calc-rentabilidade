@@ -73,7 +73,7 @@ export default function SimulacaoPage() {
         ganho: liquido - totalInvestido,
       };
     });
-  }, [investimentoInicial, aporteMensal, meses]);
+  }, [investimentoInicial, aporteMensal, meses, calcularRendimento]);
 
   const totalInvestido = investimentoInicial + aporteMensal * meses;
 

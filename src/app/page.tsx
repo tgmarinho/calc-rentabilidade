@@ -119,17 +119,19 @@ export default function Home() {
   const ranking = [...resultados].sort((a, b) => b.valor - a.valor);
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center py-4 px-4 md:px-8">
+    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center py-2 px-2 sm:py-4 sm:px-4 md:px-8">
       <div className="theme-toggle-wrapper">
         <ThemeToggle />
       </div>
       <div className="title-wrapper">
-        <Title3D text="CALC Rendimentos" className="mb-8 mt-4 w-full" />
+        <Title3D text="CALC Rendimentos" className="mb-4 sm:mb-8 mt-4 w-full" />
       </div>
-      <div className="max-w-[95%] w-full grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="max-w-[100%] sm:max-w-[95%] w-full grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
         <div>
-          <h2 className="text-3xl font-bold mb-6">Que aplicação rende mais?</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 max-w-full">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">
+            Que aplicação rende mais?
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6 max-w-full">
             <CurrencyInput
               id="investInicial"
               label="Investimento inicial"
@@ -153,6 +155,7 @@ export default function Home() {
                   <Input
                     id="periodoInput"
                     type="number"
+                    inputMode="numeric"
                     min={0}
                     value={periodo}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -162,7 +165,7 @@ export default function Home() {
                     placeholder="0"
                     aria-label="Período da aplicação"
                   />
-                  <div className="w-24">
+                  <div className="w-20 sm:w-24">
                     <Select value={periodoTipo} onValueChange={setPeriodoTipo}>
                       <SelectTrigger aria-label="Tipo de período">
                         <SelectValue placeholder="meses" />
@@ -199,28 +202,30 @@ export default function Home() {
           </p>
         </div>
         <div>
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle className="text-2xl font-bold text-violet-500 dark:text-violet-400">
+          <Card className="mb-4 sm:mb-6">
+            <CardHeader className="p-3 sm:p-4">
+              <CardTitle className="text-xl sm:text-2xl font-bold text-violet-500 dark:text-violet-400">
                 Calculadora de Renda Fixa
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <p className="text-base">
+            <CardContent className="px-3 sm:px-6 pb-3 sm:pb-4">
+              <p className="text-sm sm:text-base">
                 Veja quanto seu dinheiro pode render ao simular investimentos em
                 Tesouro Direto, CDBs, LCIs e LCAs, fundos DI e compare com o
                 retorno da poupança e a variação da inflação.
               </p>
             </CardContent>
           </Card>
-          <div className="mb-4">
-            <span className="font-semibold">Total investido: </span>
-            <span className="text-violet-600 dark:text-violet-400 font-bold">
+          <div className="mb-3 sm:mb-4">
+            <span className="font-semibold text-sm sm:text-base">
+              Total investido:{" "}
+            </span>
+            <span className="text-violet-600 dark:text-violet-400 font-bold text-sm sm:text-base">
               {currencyBRL(totalInvestido)}
             </span>
           </div>
-          <div className="mb-6">
-            <h2 className="text-xl font-bold mb-2 text-violet-600 dark:text-violet-400">
+          <div className="mb-4 sm:mb-6">
+            <h2 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2 text-violet-600 dark:text-violet-400">
               Melhores opções de investimento
             </h2>
             <div className="space-y-2">
@@ -231,12 +236,17 @@ export default function Home() {
                   100
                 );
                 return (
-                  <div key={r.nome} className="flex items-center gap-3">
-                    <span className="w-36 shrink-0">{r.nome}</span>
+                  <div
+                    key={r.nome}
+                    className="flex items-center gap-2 sm:gap-3"
+                  >
+                    <span className="w-20 sm:w-36 shrink-0 text-xs sm:text-base">
+                      {r.nome}
+                    </span>
                     <div className="flex-1">
                       <Progress value={width} />
                     </div>
-                    <span className="font-bold text-violet-600 dark:text-violet-400 w-36 text-right">
+                    <span className="font-bold text-violet-600 dark:text-violet-400 w-24 sm:w-36 text-right text-xs sm:text-base">
                       {currencyBRL(r.valor)}
                     </span>
                   </div>
@@ -260,62 +270,62 @@ export default function Home() {
       </div>
 
       {/* Separador visual entre as seções */}
-      <Separator className="my-6 max-w-[95%] w-full" />
+      <Separator className="my-4 sm:my-6 max-w-[100%] sm:max-w-[95%] w-full" />
 
       <div
-        className="overflow-x-auto max-w-[95%] w-full mt-4 px-2"
+        className="overflow-x-auto max-w-[100%] sm:max-w-[95%] w-full mt-2 sm:mt-4 px-1 sm:px-2"
         id="simulacao"
       >
-        <h2 className="text-2xl font-bold mb-6 text-violet-700 dark:text-violet-400 text-center">
+        <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-violet-700 dark:text-violet-400 text-center">
           Simulação do investimento
         </h2>
 
         {/* Resumo dos valores investidos */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div className="border rounded-md p-4 shadow-sm bg-white dark:bg-gray-900">
-            <div className="text-sm text-muted-foreground">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 mb-4 sm:mb-6">
+          <div className="border rounded-md p-2 sm:p-4 shadow-sm bg-white dark:bg-gray-900">
+            <div className="text-xs sm:text-sm text-muted-foreground">
               Valor inicial investido:
             </div>
-            <div className="text-lg font-bold text-violet-600 dark:text-violet-400">
+            <div className="text-sm sm:text-lg font-bold text-violet-600 dark:text-violet-400">
               {currencyBRL(investimentoInicial)}
             </div>
           </div>
-          <div className="border rounded-md p-4 shadow-sm bg-white dark:bg-gray-900">
-            <div className="text-sm text-muted-foreground">
+          <div className="border rounded-md p-2 sm:p-4 shadow-sm bg-white dark:bg-gray-900">
+            <div className="text-xs sm:text-sm text-muted-foreground">
               Aportes Mensais:
             </div>
-            <div className="text-lg font-bold text-violet-600 dark:text-violet-400">
+            <div className="text-sm sm:text-lg font-bold text-violet-600 dark:text-violet-400">
               {currencyBRL(aporteMensal)}
             </div>
           </div>
-          <div className="border rounded-md p-4 shadow-sm bg-white dark:bg-gray-900">
-            <div className="text-sm text-muted-foreground">
+          <div className="border rounded-md p-2 sm:p-4 shadow-sm bg-white dark:bg-gray-900">
+            <div className="text-xs sm:text-sm text-muted-foreground">
               Período da aplicação:
             </div>
-            <div className="text-lg font-bold text-violet-600 dark:text-violet-400">
+            <div className="text-sm sm:text-lg font-bold text-violet-600 dark:text-violet-400">
               {periodo} {periodoTipo}
             </div>
           </div>
-          <div className="border rounded-md p-4 shadow-sm bg-white dark:bg-gray-900">
-            <div className="text-sm text-muted-foreground">
+          <div className="border rounded-md p-2 sm:p-4 shadow-sm bg-white dark:bg-gray-900">
+            <div className="text-xs sm:text-sm text-muted-foreground">
               Soma dos valores investidos:
             </div>
-            <div className="text-lg font-bold text-violet-600 dark:text-violet-400">
+            <div className="text-sm sm:text-lg font-bold text-violet-600 dark:text-violet-400">
               {currencyBRL(totalInvestido)}
             </div>
           </div>
         </div>
 
         {/* Tabela de resultados */}
-        <div className="rounded-lg border shadow-sm overflow-x-auto">
+        <div className="rounded-lg border shadow-sm overflow-x-auto w-full">
           <Table className="w-full">
             <TableHeader>
               <TableRow className="bg-violet-600 text-white dark:bg-violet-900">
-                <TableHead className="w-36 min-w-36"></TableHead>
+                <TableHead className="w-24 sm:w-36 min-w-[90px] sm:min-w-36"></TableHead>
                 {resultados.map((r) => (
                   <TableHead
                     key={r.nome}
-                    className="font-bold text-center whitespace-nowrap min-w-36"
+                    className="font-bold text-center whitespace-nowrap text-xs sm:text-sm min-w-[90px] sm:min-w-36"
                   >
                     {r.nome}
                   </TableHead>
@@ -325,11 +335,14 @@ export default function Home() {
             <TableBody>
               {/* Valor bruto acumulado */}
               <TableRow className="hover:bg-violet-50/50 dark:hover:bg-violet-900/10">
-                <TableCell className="font-semibold">
+                <TableCell className="font-semibold text-xs sm:text-base">
                   Valor bruto acumulado
                 </TableCell>
                 {resultados.map((r) => (
-                  <TableCell key={r.nome} className="text-right font-medium">
+                  <TableCell
+                    key={r.nome}
+                    className="text-right font-medium text-xs sm:text-base"
+                  >
                     {currencyBRL(r.valor)}
                   </TableCell>
                 ))}
@@ -337,13 +350,16 @@ export default function Home() {
 
               {/* Rentabilidade bruta */}
               <TableRow className="hover:bg-violet-50/50 dark:hover:bg-violet-900/10">
-                <TableCell className="font-semibold">
+                <TableCell className="font-semibold text-xs sm:text-base">
                   Rentabilidade bruta
                 </TableCell>
                 {resultados.map((r) => {
                   const rentBruta = (r.valor / totalInvestido - 1) * 100;
                   return (
-                    <TableCell key={r.nome} className="text-right font-medium">
+                    <TableCell
+                      key={r.nome}
+                      className="text-right font-medium text-xs sm:text-base"
+                    >
                       {percent(rentBruta)}
                     </TableCell>
                   );
@@ -352,7 +368,9 @@ export default function Home() {
 
               {/* Custos */}
               <TableRow className="hover:bg-violet-50/50 dark:hover:bg-violet-900/10">
-                <TableCell className="font-semibold">Custos</TableCell>
+                <TableCell className="font-semibold text-xs sm:text-base">
+                  Custos
+                </TableCell>
                 {resultados.map((r) => {
                   const custos =
                     r.nome.includes("Selic") ||
@@ -361,7 +379,10 @@ export default function Home() {
                       ? 2500 + Math.random() * 500
                       : 0;
                   return (
-                    <TableCell key={r.nome} className="text-right font-medium">
+                    <TableCell
+                      key={r.nome}
+                      className="text-right font-medium text-xs sm:text-base"
+                    >
                       {currencyBRL(custos)}
                     </TableCell>
                   );
@@ -370,7 +391,7 @@ export default function Home() {
 
               {/* Valor pago em IR */}
               <TableRow className="hover:bg-violet-50/50 dark:hover:bg-violet-900/10">
-                <TableCell className="font-semibold">
+                <TableCell className="font-semibold text-xs sm:text-base">
                   Valor pago em IR
                 </TableCell>
                 {resultados.map((r) => {
@@ -379,7 +400,10 @@ export default function Home() {
                       ? 0
                       : (r.valor - totalInvestido) * 0.15;
                   return (
-                    <TableCell key={r.nome} className="text-right font-medium">
+                    <TableCell
+                      key={r.nome}
+                      className="text-right font-medium text-xs sm:text-base"
+                    >
                       {currencyBRL(valorIR)}
                     </TableCell>
                   );
@@ -388,7 +412,7 @@ export default function Home() {
 
               {/* Valor líquido acumulado */}
               <TableRow className="hover:bg-violet-50/50 dark:hover:bg-violet-900/10">
-                <TableCell className="font-semibold">
+                <TableCell className="font-semibold text-xs sm:text-base">
                   Valor líquido acumulado
                 </TableCell>
                 {resultados.map((r) => {
@@ -404,7 +428,10 @@ export default function Home() {
                       : (r.valor - totalInvestido) * 0.15;
                   const liquido = r.valor - custos - valorIR;
                   return (
-                    <TableCell key={r.nome} className="text-right font-medium">
+                    <TableCell
+                      key={r.nome}
+                      className="text-right font-medium text-xs sm:text-base"
+                    >
                       {currencyBRL(liquido)}
                     </TableCell>
                   );
@@ -413,7 +440,7 @@ export default function Home() {
 
               {/* Rentabilidade líquida */}
               <TableRow className="hover:bg-violet-50/50 dark:hover:bg-violet-900/10">
-                <TableCell className="font-semibold">
+                <TableCell className="font-semibold text-xs sm:text-base">
                   Rentabilidade líquida
                 </TableCell>
                 {resultados.map((r) => {
@@ -430,7 +457,10 @@ export default function Home() {
                   const liquido = r.valor - custos - valorIR;
                   const rentLiquida = (liquido / totalInvestido - 1) * 100;
                   return (
-                    <TableCell key={r.nome} className="text-right font-medium">
+                    <TableCell
+                      key={r.nome}
+                      className="text-right font-medium text-xs sm:text-base"
+                    >
                       {percent(rentLiquida)}
                     </TableCell>
                   );
@@ -439,7 +469,9 @@ export default function Home() {
 
               {/* Ganho líquido */}
               <TableRow className="hover:bg-violet-50/50 dark:hover:bg-violet-900/10">
-                <TableCell className="font-semibold">Ganho líquido</TableCell>
+                <TableCell className="font-semibold text-xs sm:text-base">
+                  Ganho líquido
+                </TableCell>
                 {resultados.map((r) => {
                   const custos =
                     r.nome.includes("Selic") ||
@@ -456,7 +488,7 @@ export default function Home() {
                   return (
                     <TableCell
                       key={r.nome}
-                      className="text-right font-bold text-violet-600 dark:text-violet-400"
+                      className="text-right font-bold text-violet-600 dark:text-violet-400 text-xs sm:text-base"
                     >
                       {currencyBRL(ganho)}
                     </TableCell>
@@ -467,7 +499,7 @@ export default function Home() {
           </Table>
         </div>
 
-        <div className="mt-4 text-xs text-muted-foreground">
+        <div className="mt-2 sm:mt-4 text-[10px] sm:text-xs text-muted-foreground px-1">
           Os cálculos consideram taxas de juros e inflação constantes ao longo
           do período e são baseados nas taxas de juros atuais e inflação
           projetada para os próximos 12 meses. É considerado o custo de 0,2% ao

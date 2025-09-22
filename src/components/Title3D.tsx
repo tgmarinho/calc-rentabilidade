@@ -8,9 +8,7 @@ interface Title3DProps {
 }
 
 export default function Title3D({ text, className = "" }: Title3DProps) {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
-  const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const titleRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -24,8 +22,6 @@ export default function Title3D({ text, className = "" }: Title3DProps) {
         // Calculate the rotation based on mouse position relative to center
         const rotateY = ((e.clientX - centerX) / (rect.width / 2)) * 10;
         const rotateX = ((centerY - e.clientY) / (rect.height / 2)) * 10;
-
-        setRotation({ x: rotateX, y: rotateY });
 
         // Aplicar a transformação diretamente para evitar estilos inline
         const titleElement = element.querySelector(".title-3d") as HTMLElement;
@@ -48,7 +44,6 @@ export default function Title3D({ text, className = "" }: Title3DProps) {
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => {
         setIsHovering(false);
-        setMousePosition({ x: 0, y: 0 });
 
         // Resetar a transformação quando sair do hover
         const titleElement = titleRef.current?.querySelector(
