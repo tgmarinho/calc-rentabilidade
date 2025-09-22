@@ -1,3 +1,40 @@
+# Calculadora Investimentos
+
+Este projeto foi iniciado com Next.js, T3 Stack (TypeScript, TailwindCSS, Prisma, tRPC, React Query, Zod) e Shadcn UI para interface.
+
+## Scripts principais
+
+- `npm run dev` — inicia o servidor de desenvolvimento
+- `npm run build` — gera build de produção
+- `npm run start` — inicia o servidor em produção
+
+## Stack utilizada
+
+- Next.js
+- TypeScript
+- TailwindCSS
+- Prisma
+- tRPC
+- React Query
+- Zod
+- Shadcn UI
+
+## Como adicionar componentes Shadcn UI
+
+Use o comando:
+
+```bash
+npx shadcn@latest add <componente>
+```
+
+Consulte a documentação oficial: https://ui.shadcn.com/docs/cli
+
+---
+
+Para dúvidas ou melhorias, abra uma issue ou contribua via pull request.
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
