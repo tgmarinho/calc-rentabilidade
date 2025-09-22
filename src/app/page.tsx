@@ -23,6 +23,9 @@ import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
 import { currencyBRL, percent, clamp } from "@/lib/format";
 import { useState } from "react";
+import CurrencyInput from "@/components/CurrencyInput";
+import { ThemeToggle } from "@/components/ui/theme/theme-toggle";
+import Title3D from "@/components/Title3D";
 
 export default function Home() {
   const [investimentoInicial, setInvestimentoInicial] = useState(0);
@@ -116,39 +119,31 @@ export default function Home() {
   const ranking = [...resultados].sort((a, b) => b.valor - a.valor);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-8 px-2">
+    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center py-8 px-2">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
+      <Title3D text="CALC Rendimentos" className="mb-8 mt-4 w-full" />
       <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
-          <h1 className="text-3xl font-bold mb-6">Que aplicação rende mais?</h1>
+          <h2 className="text-3xl font-bold mb-6">Que aplicação rende mais?</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-            <div className="flex flex-col gap-1">
-              <Label htmlFor="investInicial">Investimento inicial</Label>
-              <Input
-                id="investInicial"
-                type="number"
-                min={0}
-                value={investimentoInicial}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setInvestimentoInicial(Number(e.target.value))
-                }
-                placeholder="0"
-                aria-label="Investimento inicial"
-              />
-            </div>
-            <div className="flex flex-col gap-1">
-              <Label htmlFor="aporteMensal">Aportes mensais</Label>
-              <Input
-                id="aporteMensal"
-                type="number"
-                min={0}
-                value={aporteMensal}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setAporteMensal(Number(e.target.value))
-                }
-                placeholder="0"
-                aria-label="Aportes mensais"
-              />
-            </div>
+            <CurrencyInput
+              id="investInicial"
+              label="Investimento inicial"
+              value={investimentoInicial}
+              onValueChange={setInvestimentoInicial}
+              placeholder="0,00"
+              ariaLabel="Investimento inicial"
+            />
+            <CurrencyInput
+              id="aporteMensal"
+              label="Aportes mensais"
+              value={aporteMensal}
+              onValueChange={setAporteMensal}
+              placeholder="0,00"
+              ariaLabel="Aportes mensais"
+            />
             <div className="flex items-end gap-2">
               <div className="flex flex-col gap-1">
                 <Label htmlFor="periodoInput">Período</Label>
@@ -181,7 +176,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
             {parametros.map((p, i) => (
-              <Card key={i} className="bg-white">
+              <Card key={i}>
                 <CardHeader>
                   <CardTitle className="text-sm font-medium">
                     {p.label}
@@ -195,7 +190,7 @@ export default function Home() {
               </Card>
             ))}
           </div>
-          <p className="text-xs text-gray-500 mt-2">
+          <p className="text-xs text-muted-foreground mt-2">
             Esses são os parâmetros padrões utilizados na sua simulação. Você
             pode alterá-los e refazer os cálculos para uma simulação avançada.
           </p>
@@ -203,12 +198,12 @@ export default function Home() {
         <div>
           <Card className="mb-6">
             <CardHeader>
-              <CardTitle className="text-2xl font-bold text-purple-700">
+              <CardTitle className="text-2xl font-bold text-sky-500 dark:text-sky-400">
                 Calculadora de Renda Fixa
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-700 text-base">
+              <p className="text-base">
                 Veja quanto seu dinheiro pode render ao simular investimentos em
                 Tesouro Direto, CDBs, LCIs e LCAs, fundos DI e compare com o
                 retorno da poupança e a variação da inflação.
@@ -217,12 +212,12 @@ export default function Home() {
           </Card>
           <div className="mb-4">
             <span className="font-semibold">Total investido: </span>
-            <span className="text-blue-700 font-bold">
+            <span className="text-sky-600 dark:text-sky-400 font-bold">
               {currencyBRL(totalInvestido)}
             </span>
           </div>
           <div className="mb-6">
-            <h2 className="text-xl font-bold mb-2 text-purple-700">
+            <h2 className="text-xl font-bold mb-2 text-sky-600 dark:text-sky-400">
               Melhores opções de investimento
             </h2>
             <div className="space-y-2">
@@ -238,7 +233,7 @@ export default function Home() {
                     <div className="flex-1">
                       <Progress value={width} />
                     </div>
-                    <span className="font-bold text-blue-700 w-36 text-right">
+                    <span className="font-bold text-sky-600 dark:text-sky-400 w-36 text-right">
                       {currencyBRL(r.valor)}
                     </span>
                   </div>
@@ -247,58 +242,60 @@ export default function Home() {
             </div>
           </div>
           <div className="mb-6">
-            <Button className="w-full">Ver simulação</Button>
-          </div>
-          <div className="overflow-x-auto">
-            <h2 className="text-xl font-bold mb-2 text-purple-700">
-              Simulação do investimento
-            </h2>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Investimento</TableHead>
-                  <TableHead>Valor bruto acumulado</TableHead>
-                  <TableHead>Rentabilidade bruta</TableHead>
-                  <TableHead>Custos</TableHead>
-                  <TableHead>Valor pago em IR</TableHead>
-                  <TableHead>Valor líquido acumulado</TableHead>
-                  <TableHead>Rentabilidade líquida</TableHead>
-                  <TableHead>Ganho líquido</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {resultados.map((r) => {
-                  const bruto = r.valor;
-                  // Custos/IR simplificados inspirados na imagem (placeholders)
-                  const custos =
-                    r.nome.includes("Selic") || r.nome.includes("Prefixado")
-                      ? 3.35
-                      : 0;
-                  const ir =
-                    r.nome === "LCI e LCA" || r.nome === "Poupança" ? 0 : 13.1;
-                  const liquido = bruto - custos - ir;
-                  const rentBruta = (bruto / totalInvestido - 1) * 100;
-                  const rentLiquida = (liquido / totalInvestido - 1) * 100;
-                  const ganho = liquido - totalInvestido;
-                  return (
-                    <TableRow key={r.nome}>
-                      <TableCell className="font-semibold">{r.nome}</TableCell>
-                      <TableCell>{currencyBRL(bruto)}</TableCell>
-                      <TableCell>{percent(rentBruta)}</TableCell>
-                      <TableCell>{currencyBRL(custos)}</TableCell>
-                      <TableCell>{currencyBRL(ir)}</TableCell>
-                      <TableCell>{currencyBRL(liquido)}</TableCell>
-                      <TableCell>{percent(rentLiquida)}</TableCell>
-                      <TableCell className="font-bold text-blue-700">
-                        {currencyBRL(ganho)}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
+            <Button className="w-full bg-sky-500 hover:bg-sky-600 dark:bg-sky-600 dark:hover:bg-sky-700">
+              Ver simulação
+            </Button>
           </div>
         </div>
+      </div>
+      <div className="overflow-x-auto">
+        <h2 className="text-xl font-bold mb-2 text-sky-700 dark:text-sky-400">
+          Simulação do investimento
+        </h2>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Investimento</TableHead>
+              <TableHead>Valor bruto acumulado</TableHead>
+              <TableHead>Rentabilidade bruta</TableHead>
+              <TableHead>Custos</TableHead>
+              <TableHead>Valor pago em IR</TableHead>
+              <TableHead>Valor líquido acumulado</TableHead>
+              <TableHead>Rentabilidade líquida</TableHead>
+              <TableHead>Ganho líquido</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {resultados.map((r) => {
+              const bruto = r.valor;
+              // Custos/IR simplificados inspirados na imagem (placeholders)
+              const custos =
+                r.nome.includes("Selic") || r.nome.includes("Prefixado")
+                  ? 3.35
+                  : 0;
+              const ir =
+                r.nome === "LCI e LCA" || r.nome === "Poupança" ? 0 : 13.1;
+              const liquido = bruto - custos - ir;
+              const rentBruta = (bruto / totalInvestido - 1) * 100;
+              const rentLiquida = (liquido / totalInvestido - 1) * 100;
+              const ganho = liquido - totalInvestido;
+              return (
+                <TableRow key={r.nome}>
+                  <TableCell className="font-semibold">{r.nome}</TableCell>
+                  <TableCell>{currencyBRL(bruto)}</TableCell>
+                  <TableCell>{percent(rentBruta)}</TableCell>
+                  <TableCell>{currencyBRL(custos)}</TableCell>
+                  <TableCell>{currencyBRL(ir)}</TableCell>
+                  <TableCell>{currencyBRL(liquido)}</TableCell>
+                  <TableCell>{percent(rentLiquida)}</TableCell>
+                  <TableCell className="font-bold text-sky-600 dark:text-sky-400">
+                    {currencyBRL(ganho)}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
       </div>
     </div>
   );

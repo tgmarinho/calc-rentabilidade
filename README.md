@@ -1,23 +1,36 @@
-# Calculadora Investimentos
+# Calculadora de Investimentos
 
-Este projeto foi iniciado com Next.js, T3 Stack (TypeScript, TailwindCSS, Prisma, tRPC, React Query, Zod) e Shadcn UI para interface.
+Uma aplicação web estática para calcular e comparar diferentes opções de investimentos no Brasil, desenvolvida com Next.js e o T3 Stack.
+
+## Funcionalidades
+
+- Cálculo de rendimentos para diferentes tipos de investimentos:
+  - Tesouro Direto (Selic, Prefixado, IPCA+)
+  - CDB
+  - LCI/LCA
+  - Fundo DI
+  - Poupança
+- Comparativo visual entre as diferentes opções
+- Simulação detalhada dos investimentos
+- Suporte a modo escuro/claro com tema Sky
+
+## Stack utilizada
+
+- Next.js 15.5.3 (com App Router e Turbopack)
+- TypeScript
+- TailwindCSS
+- Prisma (preparado para futuras implementações)
+- tRPC (preparado para futuras implementações)
+- React Query
+- Zod
+- Shadcn UI (componentes personalizados)
+- next-themes para suporte a temas
 
 ## Scripts principais
 
 - `npm run dev` — inicia o servidor de desenvolvimento
 - `npm run build` — gera build de produção
 - `npm run start` — inicia o servidor em produção
-
-## Stack utilizada
-
-- Next.js
-- TypeScript
-- TailwindCSS
-- Prisma
-- tRPC
-- React Query
-- Zod
-- Shadcn UI
 
 ## Como adicionar componentes Shadcn UI
 
@@ -27,7 +40,15 @@ Use o comando:
 npx shadcn@latest add <componente>
 ```
 
-Consulte a documentação oficial: https://ui.shadcn.com/docs/cli
+Consulte a [documentação oficial](https://ui.shadcn.com/docs/cli)
+
+## Como usar
+
+1. Insira o valor do investimento inicial
+2. Configure o valor dos aportes mensais
+3. Defina o período da aplicação (em meses ou anos)
+4. Veja automaticamente a comparação entre os diferentes tipos de investimentos
+5. Confira a simulação detalhada com valores brutos, líquidos e impostos
 
 ---
 
