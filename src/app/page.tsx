@@ -177,15 +177,15 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
             {parametros.map((p, i) => (
-              <Card key={i}>
-                <CardHeader>
+              <Card key={i} className="h-auto">
+                <CardHeader className="p-4">
                   <CardTitle className="text-sm font-medium">
                     {p.label}
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="text-xl font-bold">
+                <CardContent className="px-4 pb-4 pt-0 text-xl font-bold">
                   {typeof p.value === "number"
                     ? `${p.value}${p.label.includes("%") ? " %" : ""}`
                     : p.value}
